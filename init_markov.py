@@ -1,22 +1,28 @@
 import markovify
 import pandas as pd
-df = pd.read_csv("rants.tsv", sep='\t')
-#df = df["mail excerpt"]
-# text = ""
-# for index, row in df.iterrows():
-#     text = text + (row["mail excerpt"])
+import json
 
-# Get raw text as string.
-# with open("/path/to/my/corpus.txt") as f:
-#     text = f.read()
-#
-# Build the model.
-text_model = markovify.NewlineText(df["mail excerpt"], state_size = 2)
+# linux_rants = pd.read_csv("static/data/linux_rants.tsv", sep='\t')
+# linux_rants_model = markovify.NewlineText(linux_rants["mail excerpt"], state_size = 2)
+# linux_rants_model.compile()
 
-# # Print five randomly-generated sentences
-# for i in   print(text_model.make_sentence()) range(5):
+# for i in range(10):
+#     print("-", linux_rants_model.make_sentence())
 
+trump_tweets = pd.read_csv("static/data/trump_insult_tweets_2014_to_2021.csv")
+trump_tweets_model = markovify.NewlineText(trump_tweets["tweet"])
+trump_tweets_model.compile()
 
-# Print three randomly-generated sentences of no more than 280 characters
 for i in range(10):
-    print(text_model.make_sentence())
+    print("-", trump_tweets_model.make_sentence())
+
+# toxic_data = pd.read_pickle("static/data/toxicity_data.pkl")
+# toxic_model = markovify.NewlineText(toxic_data["Text"])
+# toxic_model.compile()
+
+# for i in range(10):
+#     print("-", toxic_model.make_sentence())
+
+# save_toxic_model = toxic_model.to_json()
+# with open("static/data/toxicity_data_model.json", "w") as output:
+#     json.dump(save_toxic_model, output)

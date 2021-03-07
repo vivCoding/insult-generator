@@ -2,27 +2,39 @@ import markovify
 import pandas as pd
 import json
 
-# linux_rants = pd.read_csv("static/data/linux_rants.tsv", sep='\t')
-# linux_rants_model = markovify.NewlineText(linux_rants["mail excerpt"], state_size = 2)
-# linux_rants_model.compile()
+SAVED_MODEL = "static/data/all_insults.json"
 
-# for i in range(10):
-#     print("-", linux_rants_model.make_sentence())
+def model_txt(path):
+    with open(path, "r") as f:
+        text = f.read()
+    model = markovify.Text(text, state_size=2)
+    return model
 
-trump_tweets = pd.read_csv("static/data/trump_insult_tweets_2014_to_2021.csv")
-trump_tweets_model = markovify.NewlineText(trump_tweets["tweet"])
-trump_tweets_model.compile()
+def model_csv(path, column, sep=","):
+    df = pd.read_csv(path, sep=sep)
+    model = markovify.Text(df[column], state_size=2)
+    return model
 
-for i in range(10):
-    print("-", trump_tweets_model.make_sentence())
+def create_model():
+    # create models from file datasets
+    general_insults = model_txt("static/data/corpus.txt")
+    more_insults = model_csv("static/data/final.csv", "Comment")
+    linux_rants = model_csv("static/data/linux_rants.tsv", sep="\t", column="mail excerpt")
 
-# toxic_data = pd.read_pickle("static/data/toxicity_data.pkl")
-# toxic_model = markovify.NewlineText(toxic_data["Text"])
-# toxic_model.compile()
+    # combine models and save to json file
+    combined_model = markovify.combine([general_insults])
+    combined_model.compile()
+    combined_model = combined_model.to_json()
+    with open(SAVED_MODEL, "w") as output:
+        json.dump(combined_model, output)
 
-# for i in range(10):
-#     print("-", toxic_model.make_sentence())
+def get_model():
+    with open(SAVED_MODEL, "r") as f:
+        data = f.read()
+    data = json.loads(data)
+    model = markovify.Text.from_json(data)
+    return model
 
-# save_toxic_model = toxic_model.to_json()
-# with open("static/data/toxicity_data_model.json", "w") as output:
-#     json.dump(save_toxic_model, output)
+create_model()
+model = get_model()
+print(model.make_sentence())

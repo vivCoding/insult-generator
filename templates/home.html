@@ -7,7 +7,20 @@
   <body>
     {% extends "template.html" %}
     {% block content %}
-     <button> Click here for a New Insult </button>
+    <button id = "generateInsult"> Click here for a New Insult </button>
+    <p id = "insultDisplay"></p>
+    <script>
+    let button = document.getElementById("generateInsult");
+    let insultDisplay = document.getElementById("insultDisplay");
+
+    button.onclick = function(e) {
+      fetch("/getinsult").then(response => {
+        return response.json()
+      }).then(data => {
+        insultDisplay.textContent = data;
+      })
+    }
+  </script>
     {% endblock %}
   </body>
 </html>

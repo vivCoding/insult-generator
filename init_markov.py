@@ -35,6 +35,6 @@ def get_model():
     model = markovify.Text.from_json(data)
     return model
 
-create_model()
-model = get_model()
-print(model.make_sentence())
+# create_model()
+# model = get_model()
+# print(model.make_sentence())

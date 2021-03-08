@@ -22,7 +22,7 @@ def create_model():
     linux_rants = model_csv("static/data/linux_rants.tsv", sep="\t", column="mail excerpt")
 
     # combine models and save to json file
-    combined_model = markovify.combine([general_insults])
+    combined_model = markovify.combine([more_insults])
     combined_model.compile()
     combined_model = combined_model.to_json()
     with open(SAVED_MODEL, "w") as output:

@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Home</title>
-  </head>
-  <body>
+</head>
+<body>
     {% extends "template.html" %}
     {% block content %}
-    <button id = "generateInsult"> Click here for a New Insult </button>
-    <p id = "insultDisplay"></p>
+    <button id="generateInsult"> Generate Insult: </button>
+    
+    <p id="insultDisplay"></p>
     <script>
-    let button = document.getElementById("generateInsult");
-    let insultDisplay = document.getElementById("insultDisplay");
+        let button = document.getElementById("generateInsult");
+        let insultDisplay = document.getElementById("insultDisplay");
 
-    button.onclick = function(e) {
-      fetch("/getinsult").then(response => {
-        return response.json()
-      }).then(data => {
-        insultDisplay.textContent = data;
-      })
-    }
-  </script>
+        button.onclick = function (e) {
+            fetch("/getinsult").then(response => {
+                return response.json()
+            }).then(data => {
+                insultDisplay.textContent = data;
+            })
+        }
+    </script>
     {% endblock %}
-  </body>
+</body>
+
 </html>
